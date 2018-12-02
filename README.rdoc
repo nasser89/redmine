@@ -3,3 +3,30 @@
 Redmine is a flexible project management web application written using Ruby on Rails framework.
 
 More details can be found in the doc directory or on the official website http://www.redmine.org
+
+
+
+
+
+This is how I installed redmine on Windows 2012 R2 with IIS
+//Added by joku time 
+I did it a little different, maybe it'll work for you too.
+
+    download ruby (x86) version that's compatible with the version of redmine you want to install and install it (e.g. path c:\ruby22)
+    Download ruby devkit: http://rubyinstaller.org/add-ons/devkit/
+    extract ruby devkit to ruby folder(e.g.: c:\ruby22/devkit
+    connect ruby to devkit via: cd /ruby22; ruby dk.rb init; ruby dk.rb install; //if there is an already linked version of devkit add the --force parameter to overwrite it
+    Download compatible(with ruby x86 or x64) imagemagick: http://www.imagemagick.org/script/binary-releases.php
+    Install ImageMagick with the options to install the C/C++ headers and libs and to add ImageMagick to the system path.
+    Install the following gems: gem install bundler rails mysql
+    Install Redmine via Helicon instructions: http://www.helicontech.com/articles/installing-redmine-on-windows-in-production/ , but do not click Finish.
+    replace /ruby19 folder with previously installed version of ruby. e.g.: mv /ruby22 /ruby19
+    Go into the redmine web folder created by the Helicon tool and edit the deploy.rb file:
+
+        set the REDMINE variable to the version of redmine you want to install. e.g.: REDMINE = "3.2-stable"
+        prepend all the rake commands with bundle exec. .e.g: bundle exec rake --trace db:create
+
+    Go back to Helicon installer and click finish. This will go to the redmine page and start the install of redmine. Everytime you restart the app pool for redmine in IIS and visit the redmine page, it checks for the existence of the deploy.rb file and runs it if it exists.
+
+
+http://www.redmine.org/boards/2/topics/49636
